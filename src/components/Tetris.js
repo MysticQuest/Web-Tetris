@@ -5,20 +5,26 @@ import Display from "./Display";
 import StartButton from "./StartButton";
 //constructor
 import { createStage } from "../gameHelpers";
+//styled components
+import { StyledTetrisWrapper, StyledTetris } from "./styles/StyledTetris";
 
 const Tetris = () => {
   return (
-    <div>
-      <Stage stage={createStage()} />
-      <aside>
+    <StyledTetrisWrapper>
+      <StyledTetris>
         <div>
-          <Display text="Score" />
-          <Display text="Rows" />
-          <Display text="Level" />
+          <Stage stage={createStage()} />
+          <aside>
+            <div>
+              <Display text="Score" />
+              <Display text="Rows" />
+              <Display text="Level" />
+            </div>
+            <StartButton />
+          </aside>
         </div>
-        <StartButton />
-      </aside>
-    </div>
+      </StyledTetris>
+    </StyledTetrisWrapper>
   );
 };
 
