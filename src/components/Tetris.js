@@ -17,7 +17,7 @@ const Tetris = () => {
   const [gameOver, setGameOver] = useState(false);
 
   //importing states //also sending player to the useStage state machine
-  const [player, updatePlayerPos, resetPlayer] = usePlayer();
+  const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
   const [stage, setStage] = useStage(player, resetPlayer);
 
   const movePlayer = dir => {
@@ -58,6 +58,8 @@ const Tetris = () => {
         movePlayer(1);
       } else if (keyCode === 40) {
         dropPlayer();
+      } else if (keyCode === 38) {
+        playerRotate(stage, 1);
       }
     }
   };
