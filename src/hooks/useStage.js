@@ -9,7 +9,7 @@ export const useStage = (player, resetPlayer) => {
     const updateStage = prevStage => {
       //clear stage
       const newStage = prevStage.map(row =>
-        row.map(cell => (cell[1] === "clear" ? [0, "clear"] : [cell]))
+        row.map(cell => (cell[1] === "clear" ? [0, "clear"] : cell))
       );
 
       //draw tetromino

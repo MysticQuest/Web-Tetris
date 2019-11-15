@@ -43,7 +43,6 @@ const Tetris = () => {
         setDroptime(null);
       }
       updatePlayerPos({ x: 0, y: 0, collided: true });
-      console.log("this executes");
     }
   };
 
@@ -66,21 +65,19 @@ const Tetris = () => {
   return (
     <StyledTetrisWrapper role="button" tabIndex="0" onKeyDown={e => move(e)}>
       <StyledTetris>
-        <div>
-          <Stage stage={stage} />
-          <aside>
-            {gameOver ? (
-              <Display gameOver={gameOver} text="Game Over" />
-            ) : (
-              <div>
-                <Display text="Score" />
-                <Display text="Rows" />
-                <Display text="Level" />
-              </div>
-            )}
-            <StartButton callBack={startGame} />
-          </aside>
-        </div>
+        <Stage stage={stage} />
+        <aside>
+          {gameOver ? (
+            <Display gameOver={gameOver} text="Game Over" />
+          ) : (
+            <div>
+              <Display text="Score" />
+              <Display text="Rows" />
+              <Display text="Level" />
+            </div>
+          )}
+          <StartButton callBack={startGame} />
+        </aside>
       </StyledTetris>
     </StyledTetrisWrapper>
   );
