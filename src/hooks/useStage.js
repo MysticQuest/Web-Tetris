@@ -26,9 +26,13 @@ export const useStage = (player, resetPlayer) => {
 
       return newStage;
     };
+    //check if there was any collision
+    if (player.collided) {
+      resetPlayer();
+    }
 
     setStage(prev => updateStage(prev));
-  }, [player.collided, player.pos.x, player.pos.y, player.tetromino]);
+  }, [player, resetPlayer]);
 
   return [stage, setStage];
 };

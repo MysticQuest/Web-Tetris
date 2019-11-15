@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { usePlayer } from "../hooks/usePlayer";
 import { useStage } from "../hooks/useStage";
 //will use this to create a clean stage on restart
-import { createStage } from "../gameHelpers";
+import { createStage, checkCollision } from "../gameHelpers";
 //basic components
 import Stage from "./Stage";
 import Display from "./Display";
@@ -21,16 +21,29 @@ const Tetris = () => {
   const [stage, setStage] = useStage(player, resetPlayer);
 
   const movePlayer = dir => {
-    updatePlayerPos({ x: dir, y: 0 });
+    if (!checkCollision(player, stage, { x: dir, y: 0 })) {
+      updatePlayerPos({ x: dir, y: 0 });
+    }
   };
 
   const startGame = () => {
     setStage(createStage());
     resetPlayer();
+    setGameOver(false);
   };
 
   const drop = () => {
-    updatePlayerPos({ x: 0, y: 1, collided: false });
+    if (!checkCollision(player, stage, { x: 0, y: 1 })) {
+      updatePlayerPos({ x: 0, y: 1, collided: false });
+    } else {
+      //gameover
+      if (player.pos.y < 1) {
+        console.log("Game Over");
+        setGameOver(true);
+        setDroptime(null);
+      }
+      updatePlayerPos({ x: 0, y: 0, collided: true });
+    }
   };
 
   const dropPlayer = () => {
@@ -64,7 +77,7 @@ const Tetris = () => {
                 <Display text="Level" />
               </div>
             )}
-            <StartButton onClick={startGame} />
+            <StartButton callBack={startGame} />
           </aside>
         </div>
       </StyledTetris>
