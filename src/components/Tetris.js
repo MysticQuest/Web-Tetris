@@ -43,6 +43,7 @@ const Tetris = () => {
         setDroptime(null);
       }
       updatePlayerPos({ x: 0, y: 0, collided: true });
+      console.log("this executes");
     }
   };
 
