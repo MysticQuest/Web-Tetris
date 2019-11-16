@@ -15,7 +15,7 @@ import { StyledTetrisWrapper, StyledTetris } from "./styles/StyledTetris";
 
 const Tetris = () => {
   //creating initial states
-  const [dropTime, setDroptime] = useState(null);
+  const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
 
   //importing states //also sending player to the useStage state machine
@@ -31,45 +31,59 @@ const Tetris = () => {
     }
   };
 
+  const keyUp = ({ keyCode }) => {
+    if (!gameOver) {
+      // Activate the interval again when user releases down arrow.
+      if (keyCode === 40) {
+        setDropTime(1000 / (level + 1));
+      }
+    }
+  };
+
   const startGame = () => {
+    // Reset everything
     setStage(createStage());
-    setDroptime(1000);
+    setDropTime(1000);
     resetPlayer();
+    setScore(0);
+    setLevel(0);
+    setRows(0);
     setGameOver(false);
   };
 
   const drop = () => {
-    //increase level at 10 rows cleared
-    if (rows > level + 1 * 10) {
+    // Increase level when player has cleared 10 rows
+    if (rows > (level + 1) * 10) {
       setLevel(prev => prev + 1);
-      //increase speed
-      setDroptime(1000 / (level + 1) + 200);
+      // Also increase speed
+      setDropTime(1000 / (level + 1) + 200);
     }
+
     if (!checkCollision(player, stage, { x: 0, y: 1 })) {
       updatePlayerPos({ x: 0, y: 1, collided: false });
     } else {
-      //gameover
+      // Game over!
       if (player.pos.y < 1) {
-        console.log("Game Over");
+        console.log("GAME OVER!!!");
         setGameOver(true);
-        setDroptime(null);
+        setDropTime(null);
       }
       updatePlayerPos({ x: 0, y: 0, collided: true });
     }
   };
 
-  const keyUp = ({ keyCode }) => {
-    if (!gameOver) {
-      if (keyCode === 40) {
-        setDroptime(1000 / (level + 1) + 200);
-      }
-    }
-  };
-
   const dropPlayer = () => {
-    setDroptime(null);
+    // We don't need to run the interval when we use the arrow down to
+    // move the tetromino downwards. So deactivate it for now.
+    setDropTime(null);
     drop();
   };
+
+  // This one starts the game
+  // Custom hook by Dan Abramov
+  useInterval(() => {
+    drop();
+  }, dropTime);
 
   const move = ({ keyCode }) => {
     if (!gameOver) {
@@ -84,10 +98,6 @@ const Tetris = () => {
       }
     }
   };
-
-  useInterval(() => {
-    drop();
-  }, [dropTime]);
 
   return (
     <StyledTetrisWrapper
